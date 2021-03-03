@@ -48,6 +48,7 @@ abstract class  LocaleKeys {
   static const create_account_back_side = 'create_account.back_side';
   static const create_account = 'create_account';
   static const primary_continue = 'primary.continue';
+  static const primary_cancel = 'primary.cancel';
   static const primary = 'primary';
   static const vehicle_type_title = 'vehicle.type_title';
   static const vehicle_body_type = 'vehicle.body_type';
@@ -108,6 +109,9 @@ abstract class  LocaleKeys {
   static const create_order_unload = 'create_order.unload';
   static const create_order_choose_on_map = 'create_order.choose_on_map';
   static const create_order_address = 'create_order.address';
+  static const create_order_date_time = 'create_order.date_time';
+  static const create_order_choose_date = 'create_order.choose_date';
+  static const create_order_choose_time = 'create_order.choose_time';
   static const create_order = 'create_order';
 
 }

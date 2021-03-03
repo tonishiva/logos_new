@@ -4,14 +4,16 @@ class Order {
   double lonFrom;
   double lonTo;
   DateTime arrivalBefore;
-  String packgeDescription;
+  String packageDescription;
   String orderDescription;
   String packageType;
   double packageWidth;
-  double packgeHeight;
+  double packageHeight;
   double packageLength;
   double packageWeight;
   DateTime departureAt;
+  String originAddress;
+  String destinationAddress;
 
   Order({
     this.arrivalBefore,
@@ -22,10 +24,12 @@ class Order {
     this.lonTo,
     this.orderDescription = '',
     this.packageLength,
-    this.packageType,
+    this.packageType = 'pallet',
     this.packageWeight,
     this.packageWidth,
-    this.packgeDescription,
-    this.packgeHeight,
+    this.packageDescription,
+    this.packageHeight,
+    this.originAddress,
+    this.destinationAddress,
   });
 }

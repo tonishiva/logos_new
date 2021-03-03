@@ -15,7 +15,7 @@ import '../style.dart';
 class OrdersSearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _orders = Provider.of<OrdersProvider>(context).orders;
+    final _openedOrders = Provider.of<OrdersProvider>(context).openedOrders;
     final _additionalLoadings =
         Provider.of<OrdersProvider>(context).additionalLoadings;
     final _isOrdersSelected =
@@ -63,10 +63,10 @@ class OrdersSearchScreen extends StatelessWidget {
             child: CustomScrollView(
               slivers: [
                 SliverList(
-                  delegate: SliverChildListDelegate([
-                    _isOrdersSelected
-                        ? _orders.isEmpty
-                            ? Container(
+                  delegate: _isOrdersSelected
+                      ? _openedOrders.isEmpty
+                          ? SliverChildListDelegate([
+                              Container(
                                 padding: EdgeInsets.symmetric(horizontal: 15),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
@@ -98,50 +98,68 @@ class OrdersSearchScreen extends StatelessWidget {
                                   ],
                                 ),
                               )
-                            : Container(
-                                width: 0,
-                                height: 0,
-                              )
-                        : _additionalLoadings.isEmpty
-                            ? Container(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/images/illustrations/choose-role.svg',
-                                      width: 133,
-                                      height: 133,
-                                      fit: BoxFit.contain,
+                            ])
+                          : SliverChildBuilderDelegate(
+                              (context, i) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 10,
                                     ),
-                                    SizedBox(
-                                      height: 35,
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            offset: Offset(0, 4),
+                                            blurRadius: 5,
+                                            color: Color.fromRGBO(
+                                                229, 229, 229, 0.5),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Center(child: Text('${_openedOrders[i]['general']['label_from']} - ${_openedOrders[i]['general']['label_to']}', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),),
                                     ),
-                                    Text(
-                                      LocaleKeys
-                                          .order_search_no_additional_loadings_title,
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(0, 0, 0, 0.5),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ).tr(),
-                                    Text(
-                                      LocaleKeys
-                                          .order_search_no_additional_loadings_text,
-                                      style: TextStyle(
-                                        color: Color.fromRGBO(0, 0, 0, 0.5),
-                                        fontSize: 14,
-                                      ),
-                                    ).tr(),
-                                  ],
+                                  ),
+                              childCount: _openedOrders.length)
+                      : SliverChildListDelegate([
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/illustrations/choose-role.svg',
+                                  width: 133,
+                                  height: 133,
+                                  fit: BoxFit.contain,
                                 ),
-                              )
-                            : Container(
-                                width: 0,
-                                height: 0,
-                              ),
-                  ]),
+                                SizedBox(
+                                  height: 35,
+                                ),
+                                Text(
+                                  LocaleKeys
+                                      .order_search_no_additional_loadings_title,
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 0.5),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ).tr(),
+                                Text(
+                                  LocaleKeys
+                                      .order_search_no_additional_loadings_text,
+                                  style: TextStyle(
+                                    color: Color.fromRGBO(0, 0, 0, 0.5),
+                                    fontSize: 14,
+                                  ),
+                                ).tr(),
+                              ],
+                            ),
+                          ),
+                        ]),
                 ),
               ],
             ),

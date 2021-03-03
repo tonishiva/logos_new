@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logos_new/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:logos_new/providers/create_order_provider.dart';
+import 'package:logos_new/providers/references_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../style.dart';
 
@@ -20,13 +23,48 @@ class _CargoDescriptionState extends State<CargoDescription> {
   TextEditingController _widthController;
   TextEditingController _heightController;
   TextEditingController _lengthController;
+  List<dynamic> _packageTypes;
 
   @override
   void initState() {
-    _weightController = TextEditingController();
-    _widthController = TextEditingController();
-    _heightController = TextEditingController();
-    _lengthController = TextEditingController();
+    _packageTypes = Provider.of<ReferencesProvider>(context, listen: false)
+        .references['orders']['package-types']
+        .map((e) => e['label'])
+        .toList();
+    print(_packageTypes);
+    _weightController = TextEditingController(
+      text: Provider.of<CreateOrderProvider>(context, listen: false)
+                  .packageWeight !=
+              null
+          ? Provider.of<CreateOrderProvider>(context, listen: false)
+              .packageWeight
+              .toString()
+          : null,
+    );
+    _widthController = TextEditingController(
+        text: Provider.of<CreateOrderProvider>(context, listen: false)
+                    .packageWidth !=
+                null
+            ? Provider.of<CreateOrderProvider>(context, listen: false)
+                .packageWidth
+                .toString()
+            : null);
+    _heightController = TextEditingController(
+        text: Provider.of<CreateOrderProvider>(context, listen: false)
+                    .packageHeight !=
+                null
+            ? Provider.of<CreateOrderProvider>(context, listen: false)
+                .packageHeight
+                .toString()
+            : null);
+    _lengthController = TextEditingController(
+        text: Provider.of<CreateOrderProvider>(context, listen: false)
+                    .packageLength !=
+                null
+            ? Provider.of<CreateOrderProvider>(context, listen: false)
+                .packageLength
+                .toString()
+            : null);
     super.initState();
   }
 
@@ -105,7 +143,10 @@ class _CargoDescriptionState extends State<CargoDescription> {
                     controller: _weightController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     textAlign: TextAlign.center,
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      Provider.of<CreateOrderProvider>(context, listen: false)
+                          .setPackageWeight(double.parse(value));
+                    },
                     style: TextStyle(
                       color: Style.primaryColor,
                       fontWeight: FontWeight.w500,
@@ -135,17 +176,54 @@ class _CargoDescriptionState extends State<CargoDescription> {
                       borderRadius: BorderRadius.circular(10),
                       color: Color(0xffF9F9F9),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(),
-                        Icon(
-                          CupertinoIcons.right_chevron,
-                          size: 18,
-                          color: Color.fromRGBO(0, 0, 0, 0.5),
-                        ),
-                      ],
+                    child: DropdownButton(
+                      underline: Container(
+                        width: 0,
+                        height: 0,
+                      ),
+                      isExpanded: true,
+                      onChanged: (value) {
+                        Provider.of<CreateOrderProvider>(context, listen: false)
+                            .setPackageType(Provider.of<ReferencesProvider>(
+                                    context,
+                                    listen: false)
+                                .references['orders']['package-types']
+                                .singleWhere((e) => e['label'] == value)['key']);
+                      },
+                      icon: Icon(
+                        CupertinoIcons.right_chevron,
+                        size: 18,
+                        color: Color.fromRGBO(0, 0, 0, 0.5),
+                      ),
+                      value: Provider.of<CreateOrderProvider>(context)
+                                  .packageType !=
+                              null
+                          ? Provider.of<ReferencesProvider>(context)
+                              .references['orders']['package-types']
+                              .singleWhere((e) =>
+                                  e['key'] ==
+                                  Provider.of<CreateOrderProvider>(context)
+                                      .packageType)['label']
+                          : _packageTypes[0],
+                      items: _packageTypes
+                          .map<DropdownMenuItem<String>>((dynamic value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
+                    // child: Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     Container(),
+                    //     Icon(
+                    //       CupertinoIcons.right_chevron,
+                    //       size: 18,
+                    //       color: Color.fromRGBO(0, 0, 0, 0.5),
+                    //     ),
+                    //   ],
+                    // ),
                   ),
                 ),
               ],
@@ -181,7 +259,11 @@ class _CargoDescriptionState extends State<CargoDescription> {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         textAlign: TextAlign.center,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          Provider.of<CreateOrderProvider>(context,
+                                  listen: false)
+                              .setPackageWidth(double.parse(value));
+                        },
                         style: TextStyle(
                           color: Style.primaryColor,
                           fontWeight: FontWeight.w500,
@@ -224,7 +306,11 @@ class _CargoDescriptionState extends State<CargoDescription> {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         textAlign: TextAlign.center,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          Provider.of<CreateOrderProvider>(context,
+                                  listen: false)
+                              .setPackageHeight(double.parse(value));
+                        },
                         style: TextStyle(
                           color: Style.primaryColor,
                           fontWeight: FontWeight.w500,
@@ -267,7 +353,11 @@ class _CargoDescriptionState extends State<CargoDescription> {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         textAlign: TextAlign.center,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          Provider.of<CreateOrderProvider>(context,
+                                  listen: false)
+                              .setPackageLength(double.parse(value));
+                        },
                         style: TextStyle(
                           color: Style.primaryColor,
                           fontWeight: FontWeight.w500,
