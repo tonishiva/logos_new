@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logos_new/generated/locale_keys.g.dart';
 import 'package:logos_new/providers/create_order_provider.dart';
+import 'package:logos_new/providers/sender_orders_provider.dart';
 import 'package:logos_new/screens/create_order_date_screen.dart';
 import 'package:logos_new/screens/create_order_location_screen.dart';
+import 'package:logos_new/screens/create_order_sender_receiver_screen.dart';
+import 'package:logos_new/screens/my_orders_screen.dart';
 import 'package:logos_new/widgets/add_comment_to_order.dart';
 import 'package:logos_new/widgets/appbar_leading.dart';
 import 'package:logos_new/widgets/cargo_description.dart';
@@ -22,7 +25,9 @@ class CreateOrderScreen extends StatelessWidget {
     return Scaffold(
       drawerScrimColor: Color.fromRGBO(0, 0, 0, 0.5),
       drawer: Drawer(
-        child: SettingsDrawer(),
+        child: SettingsDrawer(
+          isMyOrdersScreen: false,
+        ),
       ),
       appBar: AppBar(
         backgroundColor: Color(0xffFAFAFA),
@@ -194,7 +199,17 @@ class CreateOrderScreen extends StatelessWidget {
                       height: 7,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CreateOrderSenderReceiverScreen(
+                              isSender: true,
+                            ),
+                          ),
+                        );
+                      },
                       child: Container(
                         height: 50,
                         width: double.infinity,
@@ -219,13 +234,30 @@ class CreateOrderScreen extends StatelessWidget {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  LocaleKeys.create_order_sender,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromRGBO(0, 0, 0, 0.5),
-                                  ),
-                                ).tr(),
+                                _order.useSenderCredentials != null
+                                    ? _order.useSenderCredentials == false
+                                        ? Text(
+                                            LocaleKeys.create_order_me,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Style.primaryColor,
+                                            ),
+                                          ).tr()
+                                        : Text(
+                                            '${_order.senderName} ${_order.senderSurname}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Style.primaryColor,
+                                            ),
+                                          )
+                                    : Text(
+                                        LocaleKeys.create_order_sender,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                                        ),
+                                      ).tr(),
                               ],
                             ),
                             Icon(
@@ -464,7 +496,17 @@ class CreateOrderScreen extends StatelessWidget {
                       height: 7,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CreateOrderSenderReceiverScreen(
+                              isSender: false,
+                            ),
+                          ),
+                        );
+                      },
                       child: Container(
                         height: 50,
                         width: double.infinity,
@@ -489,13 +531,30 @@ class CreateOrderScreen extends StatelessWidget {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  LocaleKeys.create_order_sender,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromRGBO(0, 0, 0, 0.5),
-                                  ),
-                                ).tr(),
+                                _order.useReceiverCredentials != null
+                                    ? _order.useReceiverCredentials == false
+                                        ? Text(
+                                            LocaleKeys.create_order_me,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Style.primaryColor,
+                                            ),
+                                          ).tr()
+                                        : Text(
+                                            '${_order.receiverName} ${_order.receiverSurname}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Style.primaryColor,
+                                            ),
+                                          )
+                                    : Text(
+                                        LocaleKeys.create_order_receiver,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                                        ),
+                                      ).tr(),
                               ],
                             ),
                             Icon(
@@ -642,53 +701,6 @@ class CreateOrderScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Container(
-                width: double.infinity,
-                height: 60,
-                padding: EdgeInsets.all(
-                  8,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0, 4),
-                      color: Color.fromRGBO(236, 236, 236, 0.5),
-                      blurRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      LocaleKeys.create_order_cost,
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Style.primaryColor,
-                      ),
-                    ).tr(),
-                    Text(
-                      '500 ₴',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        color: Style.primaryColor,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Container(
               width: double.infinity,
               height: 50,
@@ -699,6 +711,8 @@ class CreateOrderScreen extends StatelessWidget {
                 disabledColor: Color(0xffECECEC),
                 elevation: 0,
                 onPressed: _order.arrivalBefore == null ||
+                        _order.useSenderCredentials == null ||
+                        _order.useReceiverCredentials == null ||
                         _order.departureAt == null ||
                         _order.latFrom == null ||
                         _order.latTo == null ||
@@ -720,6 +734,19 @@ class CreateOrderScreen extends StatelessWidget {
                         try {
                           await _order.createOrder(context: context);
                           _order.clearData(notify: true);
+                          Provider.of<SenderOrdersProvider>(context,
+                                  listen: false)
+                              .setLoading(true);
+                          Provider.of<SenderOrdersProvider>(context,
+                                  listen: false)
+                              .getAllLists(context: context);
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyOrdersScreen(
+                                        isSender: true,
+                                      )),
+                              (route) => route.isFirst);
                         } catch (error) {
                           _order.setLoading(false);
                           print(error);

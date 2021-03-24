@@ -31,7 +31,6 @@ class _CargoDescriptionState extends State<CargoDescription> {
         .references['orders']['package-types']
         .map((e) => e['label'])
         .toList();
-    print(_packageTypes);
     _weightController = TextEditingController(
       text: Provider.of<CreateOrderProvider>(context, listen: false)
                   .packageWeight !=
@@ -188,7 +187,8 @@ class _CargoDescriptionState extends State<CargoDescription> {
                                     context,
                                     listen: false)
                                 .references['orders']['package-types']
-                                .singleWhere((e) => e['label'] == value)['key']);
+                                .singleWhere(
+                                    (e) => e['label'] == value)['key']);
                       },
                       icon: Icon(
                         CupertinoIcons.right_chevron,

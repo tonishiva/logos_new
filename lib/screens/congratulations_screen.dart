@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logos_new/providers/agreements_provider.dart';
 import 'package:logos_new/providers/auth_provider.dart';
+import 'package:logos_new/providers/logged_state_provider.dart';
 import 'package:logos_new/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -84,7 +85,7 @@ class CongratulationsScreen extends StatelessWidget {
                 disabledColor: Color(0xffECECEC),
                 elevation: 0,
                 onPressed: () {
-                  Provider.of<AuthProvider>(context, listen: false)
+                  Provider.of<LoggedStateProvider>(context, listen: false)
                       .setIsAuth(true);
                   Navigator.pop(context);
                 },

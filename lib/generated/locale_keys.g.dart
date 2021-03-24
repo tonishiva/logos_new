@@ -49,6 +49,7 @@ abstract class  LocaleKeys {
   static const create_account = 'create_account';
   static const primary_continue = 'primary.continue';
   static const primary_cancel = 'primary.cancel';
+  static const primary_ok = 'primary.ok';
   static const primary = 'primary';
   static const vehicle_type_title = 'vehicle.type_title';
   static const vehicle_body_type = 'vehicle.body_type';
@@ -85,6 +86,8 @@ abstract class  LocaleKeys {
   static const drawer_settings = 'drawer.settings';
   static const drawer_create_order = 'drawer.create_order';
   static const drawer = 'drawer';
+  static const logout_dialog_title = 'logout.dialog_title';
+  static const logout = 'logout';
   static const create_order_origin = 'create_order.origin';
   static const create_order_destination = 'create_order.destination';
   static const create_order_where_from = 'create_order.where_from';
@@ -112,6 +115,23 @@ abstract class  LocaleKeys {
   static const create_order_date_time = 'create_order.date_time';
   static const create_order_choose_date = 'create_order.choose_date';
   static const create_order_choose_time = 'create_order.choose_time';
+  static const create_order_me = 'create_order.me';
   static const create_order = 'create_order';
+  static const detailed_order_title = 'detailed_order.title';
+  static const detailed_order_take_order = 'detailed_order.take_order';
+  static const detailed_order_load = 'detailed_order.load';
+  static const detailed_order_unload = 'detailed_order.unload';
+  static const detailed_order_package_type = 'detailed_order.package_type';
+  static const detailed_order_weight = 'detailed_order.weight';
+  static const detailed_order_dimensions = 'detailed_order.dimensions';
+  static const detailed_order = 'detailed_order';
+  static const my_orders_title = 'my_orders.title';
+  static const my_orders_new_orders = 'my_orders.new_orders';
+  static const my_orders_active_orders = 'my_orders.active_orders';
+  static const my_orders_completed_orders = 'my_orders.completed_orders';
+  static const my_orders_pending_orders = 'my_orders.pending_orders';
+  static const my_orders_ongoing_orders = 'my_orders.ongoing_orders';
+  static const my_orders_archive = 'my_orders.archive';
+  static const my_orders = 'my_orders';
 
 }

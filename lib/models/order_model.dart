@@ -14,7 +14,14 @@ class Order {
   DateTime departureAt;
   String originAddress;
   String destinationAddress;
-
+  bool useSenderCredentials;
+  bool useReceiverCredentials;
+  String senderName;
+  String senderSurname;
+  String senderPhone;
+  String receiverName;
+  String receiverSurname;
+  String receiverPhone;
   Order({
     this.arrivalBefore,
     this.departureAt,
@@ -31,5 +38,13 @@ class Order {
     this.packageHeight,
     this.originAddress,
     this.destinationAddress,
+    this.receiverName,
+    this.receiverPhone,
+    this.receiverSurname,
+    this.senderName,
+    this.senderPhone,
+    this.senderSurname,
+    this.useReceiverCredentials,
+    this.useSenderCredentials,
   });
 }

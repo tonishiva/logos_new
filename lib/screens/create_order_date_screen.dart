@@ -88,7 +88,9 @@ class CreateOrderDateScreen extends StatelessWidget {
                                 : DateTime.now()
                             : _order.arrivalBefore != null
                                 ? _order.arrivalBefore
-                                : DateTime.now(),
+                                : _order.departureAt != null
+                                    ? _order.departureAt
+                                    : DateTime.now(),
                         lastDate: DateTime(2100),
                         locale: EasyLocalization.of(context).locale,
                       );

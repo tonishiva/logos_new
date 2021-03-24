@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logos_new/generated/locale_keys.g.dart';
 import 'package:logos_new/providers/auth_provider.dart';
+import 'package:logos_new/providers/create_order_provider.dart';
+import 'package:logos_new/providers/logged_state_provider.dart';
+import 'package:logos_new/providers/orders_search_provider.dart';
+import 'package:logos_new/providers/sender_orders_provider.dart';
+import 'package:logos_new/providers/transporter_orders_provider.dart';
 import 'package:logos_new/providers/user_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:logos_new/screens/create_order_screen.dart';
+import 'package:logos_new/screens/my_orders_screen.dart';
+import 'package:logos_new/screens/orders_search_screen.dart';
 import 'package:logos_new/widgets/settings_drawer_item.dart';
 import 'package:provider/provider.dart';
 
 import '../style.dart';
+import '../globals.dart' as globals;
 
 class SettingsDrawer extends StatelessWidget {
+  final bool isMyOrdersScreen;
   const SettingsDrawer({
+    @required this.isMyOrdersScreen,
     Key key,
   }) : super(key: key);
 
@@ -66,21 +78,73 @@ class SettingsDrawer extends StatelessWidget {
               ? SettingsDrawerItem(
                   iconData: CupertinoIcons.cube_box,
                   onTap: () {
-                    Navigator.pop(context);
+                    if (!isMyOrdersScreen) {
+                      Navigator.pop(context);
+                    } else {
+                      Provider.of<TransporterOrdersProvider>(context,
+                              listen: false)
+                          .clearData();
+                      Provider.of<OrdersSearchProvider>(context, listen: false)
+                          .setLoading(true);
+                      Provider.of<OrdersSearchProvider>(context, listen: false)
+                          .getOpenedOrders(context: context);
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OrdersSearchScreen()),
+                        (route) => route.isFirst,
+                      );
+                    }
                   },
                   localeKey: LocaleKeys.drawer_order_search,
                 )
               : SettingsDrawerItem(
                   iconData: CupertinoIcons.cube_box,
                   onTap: () {
-                    Navigator.pop(context);
+                    if (!isMyOrdersScreen) {
+                      Navigator.pop(context);
+                    } else {
+                      Provider.of<SenderOrdersProvider>(context, listen: false)
+                          .clearData();
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CreateOrderScreen()),
+                        (route) => route.isFirst,
+                      );
+                    }
                   },
                   localeKey: LocaleKeys.drawer_create_order,
                 ),
           SettingsDrawerItem(
             iconData: CupertinoIcons.doc_plaintext,
             onTap: () {
-              Navigator.pop(context);
+              if (isMyOrdersScreen) {
+                Navigator.pop(context);
+              } else {
+                if (_user['roles'][0] == 'sender') {
+                  Provider.of<CreateOrderProvider>(context, listen: false)
+                      .clearData();
+                  Provider.of<SenderOrdersProvider>(context, listen: false)
+                      .setLoading(true);
+                  Provider.of<SenderOrdersProvider>(context, listen: false)
+                      .getAllLists(context: context);
+                } else {
+                  Provider.of<TransporterOrdersProvider>(context, listen: false)
+                      .setLoading(true);
+                  Provider.of<TransporterOrdersProvider>(context, listen: false)
+                      .getAllLists(context: context);
+                }
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyOrdersScreen(
+                      isSender: _user['roles'][0] == 'sender',
+                    ),
+                  ),
+                  (route) => route.isFirst,
+                );
+              }
             },
             localeKey: LocaleKeys.drawer_my_orders,
           ),
@@ -125,8 +189,10 @@ class SettingsDrawer extends StatelessWidget {
           GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
-              Provider.of<AuthProvider>(context, listen: false)
-                  .logout(context: context);
+              showDialog(
+                context: context,
+                child: LogoutAlertDialog(),
+              );
               // Navigator.popUntil(context, (route) => route.isFirst);
             },
             child: Row(
@@ -156,6 +222,56 @@ class SettingsDrawer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class LogoutAlertDialog extends StatelessWidget {
+  const LogoutAlertDialog({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _isLoading = Provider.of<AuthProvider>(context).isLoading;
+    return AlertDialog(
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(LocaleKeys.primary_cancel).tr(),
+        ),
+        TextButton(
+          onPressed: () async {
+            Provider.of<AuthProvider>(context, listen: false).setLoading(true);
+            try {
+              globals.clearSessionData(context);
+              await Provider.of<AuthProvider>(context, listen: false)
+                  .logout(context: context);
+              Provider.of<LoggedStateProvider>(context, listen: false)
+                  .setIsAuth(false);
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
+            } catch (error) {
+              print(error);
+            }
+          },
+          child: Text(LocaleKeys.primary_ok).tr(),
+        ),
+      ],
+      title: Text(LocaleKeys.logout_dialog_title).tr(),
+      content: _isLoading
+          ? Container(
+              height: 30,
+              child: SpinKitThreeBounce(
+                color: Style.primaryColor,
+                size: 30,
+              ),
+            )
+          : null,
     );
   }
 }

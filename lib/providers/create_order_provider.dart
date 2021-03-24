@@ -19,6 +19,38 @@ class CreateOrderProvider with ChangeNotifier {
     return _temporarySelectedDate;
   }
 
+  String get senderName {
+    return _order.senderName;
+  }
+
+  String get senderSurname {
+    return _order.senderSurname;
+  }
+
+  String get senderPhone {
+    return _order.senderPhone;
+  }
+
+  String get receiverName {
+    return _order.receiverName;
+  }
+
+  String get receiverSurname {
+    return _order.receiverSurname;
+  }
+
+  String get receiverPhone {
+    return _order.receiverPhone;
+  }
+
+  bool get useSenderCredentials {
+    return _order.useSenderCredentials;
+  }
+
+  bool get useReceiverCredentials {
+    return _order.useReceiverCredentials;
+  }
+
   String get originAddress {
     return _order.originAddress;
   }
@@ -73,6 +105,46 @@ class CreateOrderProvider with ChangeNotifier {
 
   DateTime get departureAt {
     return _order.departureAt;
+  }
+
+  void setSenderName(String value) {
+    _order.senderName = value;
+    notifyListeners();
+  }
+
+  void setSenderSurname(String value) {
+    _order.senderSurname = value;
+    notifyListeners();
+  }
+
+  void setSenderPhone(String value) {
+    _order.senderPhone = value;
+    notifyListeners();
+  }
+
+  void setReceiverName(String value) {
+    _order.receiverName = value;
+    notifyListeners();
+  }
+
+  void setReceiverSurname(String value) {
+    _order.receiverSurname = value;
+    notifyListeners();
+  }
+
+  void setReceiverPhone(String value) {
+    _order.receiverPhone = value;
+    notifyListeners();
+  }
+
+  void setUseSenderCredentials(bool value) {
+    _order.useSenderCredentials = value;
+    notifyListeners();
+  }
+
+  void setUseReceiverCredentials(bool value) {
+    _order.useReceiverCredentials = value;
+    notifyListeners();
   }
 
   void setLoading(bool value) {
@@ -191,7 +263,15 @@ class CreateOrderProvider with ChangeNotifier {
           "package_depth": _order.packageLength,
           "package_weight": _order.packageWeight,
           "departure_at":
-              '${DateFormat('y-MM-dd HH:mm:ss', EasyLocalization.of(context).locale.toLanguageTag()).format(_order.departureAt)}'
+              '${DateFormat('y-MM-dd HH:mm:ss', EasyLocalization.of(context).locale.toLanguageTag()).format(_order.departureAt)}',
+          "use_sender_credentials": _order.useSenderCredentials,
+          "sender_cred_name": _order.senderName,
+          "sender_cred_surname": _order.senderSurname,
+          "sender_cred_phone": '+38' + _order.senderPhone,
+          "use_receiver_credentials": _order.useReceiverCredentials,
+          "receiver_cred_name": _order.receiverName,
+          "receiver_cred_surname": _order.receiverSurname,
+          "receiver_cred_phone": '+38' + _order.receiverPhone,
         },
       );
       print(response.statusCode);

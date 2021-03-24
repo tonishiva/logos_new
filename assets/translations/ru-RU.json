@@ -49,7 +49,8 @@
     },
     "primary": {
         "continue": "Продолжить",
-        "cancel": "Отмена"
+        "cancel": "Отмена",
+        "ok": "ОК"
     },
     "vehicle": {
         "type_title": "Тип транспортного средства.",
@@ -90,6 +91,9 @@
         "settings": "Настройки",
         "create_order": "Создать заказ"
     },
+    "logout": {
+        "dialog_title": "Точно выйти?"
+    },
     "create_order": {
         "origin": "Погрузка",
         "destination": "Доставка",
@@ -115,8 +119,27 @@
         "unload": "Выгрузить",
         "choose_on_map": "Выбрать на карте",
         "address": "Адрес",
-        "date_time" : "Дата и время",
+        "date_time": "Дата и время",
         "choose_date": "Выбрать дату",
-        "choose_time": "Выбрать время"
+        "choose_time": "Выбрать время",
+        "me": "Я"
+    },
+    "detailed_order": {
+        "title": "Описание заказа",
+        "take_order": "Взять заказ",
+        "load": "Погрузить",
+        "unload": "Доставить",
+        "package_type": "Тип упаковки",
+        "weight": "Вес",
+        "dimensions": "Габариты (Д/Ш/В)"
+    },
+    "my_orders": {
+        "title": "Мои заказы",
+        "new_orders": "Новые",
+        "active_orders": "В процессе",
+        "completed_orders": "Выполненные",
+        "pending_orders": "В обработке",
+        "ongoing_orders": "Выполняется",
+        "archive": "Архив"
     }
 }

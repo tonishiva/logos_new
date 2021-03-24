@@ -21,7 +21,6 @@ class AuthProvider with ChangeNotifier {
   String _error;
   String _token;
   String _userRole;
-  bool _isAuth = false;
 
   String get userRole {
     return _userRole;
@@ -29,15 +28,6 @@ class AuthProvider with ChangeNotifier {
 
   String get error {
     return _error;
-  }
-
-  bool get isAuth {
-    return _isAuth;
-  }
-
-  void setIsAuth(bool value) {
-    _isAuth = value;
-    notifyListeners();
   }
 
   Map<String, dynamic> get errors {
@@ -159,7 +149,6 @@ class AuthProvider with ChangeNotifier {
 
   void setAgreementId(int value) {
     _user.agreementId = value;
-    notifyListeners();
   }
 
   void setLiceseFront(File value) {
@@ -462,7 +451,6 @@ class AuthProvider with ChangeNotifier {
               }
             : {}
       });
-      print('2');
       Response response = await dio.post(
         url,
         data: formData,
@@ -483,7 +471,6 @@ class AuthProvider with ChangeNotifier {
         prefs.remove('userData');
       }
       prefs.setString('userData', userToken);
-      notifyListeners();
     } on DioError catch (error) {
       if (error.response != null) {
         print(error.response.statusCode);
@@ -496,17 +483,6 @@ class AuthProvider with ChangeNotifier {
         print(error.message);
       }
       throw error;
-    }
-  }
-
-  Future<bool> tryAutoLogin() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('userData')) {
-      return false;
-    } else {
-      _isAuth = true;
-      notifyListeners();
-      return true;
     }
   }
 
@@ -539,11 +515,8 @@ class AuthProvider with ChangeNotifier {
         prefs.remove('userData');
       }
       prefs.setString('userData', userToken);
-      _isAuth = true;
       print(response.statusCode);
       print(response.data);
-      notifyListeners();
-      print(isAuth);
     } on DioError catch (error) {
       if (error.response != null) {
         print(error.response.statusCode);
@@ -582,19 +555,33 @@ class AuthProvider with ChangeNotifier {
       if (prefs.containsKey('userData')) {
         prefs.remove('userData');
       }
-      _isAuth = false;
+      if (_isLoading) {
+        _isLoading = false;
+      }
       print(response.statusCode);
       print(response.statusMessage);
       print(response.data);
       notifyListeners();
     } on DioError catch (error) {
+      if (_isLoading) {
+        _isLoading = false;
+        notifyListeners();
+      }
       if (error.response != null) {
         print(error.response.statusCode);
         print(error.response.data);
+        if (_isLoading) {
+          _isLoading = false;
+          notifyListeners();
+        }
       } else {
         // Something happened in setting up or sending the request that triggered an Error
         print(error.request);
         print(error.message);
+        if (_isLoading) {
+          _isLoading = false;
+          notifyListeners();
+        }
       }
       throw error;
     }

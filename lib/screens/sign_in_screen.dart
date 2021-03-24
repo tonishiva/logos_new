@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logos_new/generated/locale_keys.g.dart';
 import 'package:logos_new/providers/auth_provider.dart';
+import 'package:logos_new/providers/logged_state_provider.dart';
 import 'package:logos_new/providers/user_provider.dart';
 import 'package:logos_new/screens/user_auth_password_screen.dart';
 import 'package:provider/provider.dart';
@@ -246,6 +247,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                       Provider.of<AuthProvider>(context,
                                               listen: false)
                                           .setLoading(false);
+                                      Provider.of<LoggedStateProvider>(context,
+                                              listen: false)
+                                          .setIsAuth(true);
                                       Navigator.pop(context);
                                     } catch (error) {
                                       Provider.of<AuthProvider>(context,

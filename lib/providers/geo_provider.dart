@@ -31,6 +31,7 @@ class GeoProvider with ChangeNotifier {
 
   void clearData() {
     _autocompleteList = [];
+    _point = {};
   }
 
   Future<void> getUserCredentials(BuildContext context) async {
@@ -51,7 +52,7 @@ class GeoProvider with ChangeNotifier {
     if (!_headers.containsKey('Authorization')) {
       return false;
     }
-    
+
     final url = globals.baseUrl +
         "geo/autocomplete?q=$location&addressdetails=1&countrycodes=ua";
     Dio dio = Dio();
@@ -90,34 +91,34 @@ class GeoProvider with ChangeNotifier {
     }
   }
 
-  // Future<void> getPlace({double latitude, double longitude}) async {
-  //   await getLocale();
-  //   await getUserCredentials();
-  //   if (!_headers.containsKey('Authorization')) {
-  //     return false;
-  //   }
-  //   final url = 'http://5.189.181.193/api/geo/marker/$latitude/$longitude';
-  //   Dio dio = Dio();
-  //   try {
-  //     Response response =
-  //         await dio.get(url, options: Options(headers: _headers));
-  //     print(response.statusCode);
-  //     print(response.data);
-  //     _point = response.data['data'];
-  //     notifyListeners();
-  //   } on DioError catch (error) {
-  //     if (error.response != null) {
-  //       print(error.response.statusCode);
-  //       print(error.response.statusMessage);
-  //     } else {
-  //       // Something happened in setting up or sending the request that triggered an Error
-  //       print(error.request);
-  //       print(error.message);
-  //     }
-  //     throw error;
-  //   } catch (error) {
-  //     print(error);
-  //     throw error;
-  //   }
-  // }
+  Future<void> getPlace(
+      {BuildContext context, double latitude, double longitude}) async {
+    await getUserCredentials(context);
+    if (!_headers.containsKey('Authorization')) {
+      return false;
+    }
+    final url = globals.baseUrl + 'geo/marker/$latitude/$longitude';
+    Dio dio = Dio();
+    try {
+      Response response =
+          await dio.get(url, options: Options(headers: _headers));
+      print(response.statusCode);
+      print(response.data);
+      _point = response.data['data'];
+      notifyListeners();
+    } on DioError catch (error) {
+      if (error.response != null) {
+        print(error.response.statusCode);
+        print(error.response.statusMessage);
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(error.request);
+        print(error.message);
+      }
+      throw error;
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
 }
