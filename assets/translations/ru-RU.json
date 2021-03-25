@@ -127,6 +127,9 @@
     "detailed_order": {
         "title": "Описание заказа",
         "take_order": "Взять заказ",
+        "cancel_order": "Отменить заказ",
+        "drop_driver": "Отменить водителя",
+        "finish_order": "Завершить заказ",
         "load": "Погрузить",
         "unload": "Доставить",
         "package_type": "Тип упаковки",

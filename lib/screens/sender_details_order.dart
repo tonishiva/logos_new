@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:logos_new/generated/locale_keys.g.dart';
 import 'package:logos_new/providers/detail_order_provider.dart';
+import 'package:logos_new/providers/sender_orders_provider.dart';
 import 'package:logos_new/providers/transporter_orders_provider.dart';
 import 'package:logos_new/providers/user_provider.dart';
 import 'package:logos_new/screens/my_orders_screen.dart';
@@ -15,10 +16,10 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../style.dart';
 
-class TransporterDetailedOrderScreen extends StatelessWidget {
+class SenderDetailedOrderScreen extends StatelessWidget {
   final String labelFrom;
   final String labelTo;
-  const TransporterDetailedOrderScreen(
+  const SenderDetailedOrderScreen(
       {@required this.labelFrom, @required this.labelTo});
 
   @override
@@ -110,20 +111,15 @@ class TransporterDetailedOrderScreen extends StatelessWidget {
                                     onPressed: () async {
                                       data.setIsButtonLoading(true);
                                       try {
-                                        await data.acceptOrder(
-                                          context: context,
-                                          vehicleId: Provider.of<UserProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .userVehicles[0]['id'],
-                                        );
+                                        await data.cancelOrder(
+                                            context: context);
                                         data.setIsButtonLoading(false);
                                         data.clearData();
-                                        Provider.of<TransporterOrdersProvider>(
+                                        Provider.of<SenderOrdersProvider>(
                                                 context,
                                                 listen: false)
                                             .setLoading(true);
-                                        Provider.of<TransporterOrdersProvider>(
+                                        Provider.of<SenderOrdersProvider>(
                                                 context,
                                                 listen: false)
                                             .getAllLists(context: context);
@@ -165,7 +161,7 @@ class TransporterDetailedOrderScreen extends StatelessWidget {
                                           )
                                         : Text(
                                             LocaleKeys
-                                                .detailed_order_take_order,
+                                                .detailed_order_cancel_order,
                                             style: TextStyle(
                                               color: Style.primaryColor,
                                               fontSize: 14,
@@ -194,16 +190,15 @@ class TransporterDetailedOrderScreen extends StatelessWidget {
                                         onPressed: () async {
                                           data.setIsButtonLoading(true);
                                           try {
-                                            await data.finishOrder(
-                                              context: context,
-                                            );
+                                            await data.dropDriver(
+                                                context: context);
                                             data.setIsButtonLoading(false);
                                             data.clearData();
-                                            Provider.of<TransporterOrdersProvider>(
+                                            Provider.of<SenderOrdersProvider>(
                                                     context,
                                                     listen: false)
                                                 .setLoading(true);
-                                            Provider.of<TransporterOrdersProvider>(
+                                            Provider.of<SenderOrdersProvider>(
                                                     context,
                                                     listen: false)
                                                 .getAllLists(context: context);
@@ -247,7 +242,7 @@ class TransporterDetailedOrderScreen extends StatelessWidget {
                                               )
                                             : Text(
                                                 LocaleKeys
-                                                    .detailed_order_complete_order,
+                                                    .detailed_order_drop_driver,
                                                 style: TextStyle(
                                                   color: Style.primaryColor,
                                                   fontSize: 14,

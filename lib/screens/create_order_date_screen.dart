@@ -196,7 +196,8 @@ class CreateOrderDateScreen extends StatelessWidget {
                           scrollController: _minutesController,
                           backgroundColor: Color.fromRGBO(118, 118, 128, 0.12),
                           children: [
-                            for (var i = 0; i < 60; i += 1) Text('$i')
+                            for (var i = 0; i < 60; i += 1)
+                              i < 10 ? Text('0$i') : Text('$i')
                           ],
                           itemExtent: 28,
                           onSelectedItemChanged: (value) {

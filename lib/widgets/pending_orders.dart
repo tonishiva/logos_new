@@ -5,6 +5,7 @@ import 'package:logos_new/generated/locale_keys.g.dart';
 import 'package:logos_new/providers/detail_order_provider.dart';
 import 'package:logos_new/providers/orders_search_provider.dart';
 import 'package:logos_new/providers/sender_orders_provider.dart';
+import 'package:logos_new/screens/sender_details_order.dart';
 import 'package:logos_new/screens/transporter_detailed_order_screen.dart';
 import 'package:logos_new/widgets/order_list_item.dart';
 import 'package:provider/provider.dart';
@@ -168,7 +169,7 @@ class _PendingOrdersListState extends State<PendingOrdersList> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      TransporterDetailedOrderScreen(
+                                      SenderDetailedOrderScreen(
                                     labelFrom: _pendingOrders[i]['general']
                                         ['label_from'],
                                     labelTo: _pendingOrders[i]['general']

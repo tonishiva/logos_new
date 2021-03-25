@@ -5,11 +5,11 @@ import 'package:logos_new/generated/locale_keys.g.dart';
 
 import '../style.dart';
 
-class MapPanelTransporter extends StatelessWidget {
+class MapPanel extends StatelessWidget {
   final Map<String, dynamic> order;
   final String labelFrom;
   final String labelTo;
-  const MapPanelTransporter({
+  const MapPanel({
     @required this.order,
     @required this.labelFrom,
     @required this.labelTo,
@@ -235,7 +235,10 @@ class MapPanelTransporter extends StatelessWidget {
                                   width: 10,
                                 ),
                                 Text(
-                                  '${order['users']['sender']['first_name']} ${order['users']['sender']['last_name']}',
+                                  order['general']['use_sender_credentials'] ==
+                                          false
+                                      ? '${order['users']['sender']['first_name']} ${order['users']['sender']['last_name']}'
+                                      : '${order['general']['sender_cred_name']} ${order['general']['sender_cred_surname']}',
                                   style: TextStyle(
                                     color: Color(0xffA0A0A0),
                                     fontSize: 12,
@@ -262,7 +265,11 @@ class MapPanelTransporter extends StatelessWidget {
                                       width: 10,
                                     ),
                                     Text(
-                                      'XXX-XXX-XX-XX',
+                                      order['general']
+                                                  ['use_sender_credentials'] ==
+                                              false
+                                          ? '${order['users']['sender']['phones'][0]['number']}'
+                                          : '${order['general']['sender_cred_phone']}',
                                       style: TextStyle(
                                         color: Color(0xffA0A0A0),
                                         fontSize: 12,
@@ -370,9 +377,11 @@ class MapPanelTransporter extends StatelessWidget {
                                   width: 10,
                                 ),
                                 Text(
-                                  order['users']['transporter'] != null
-                                      ? '${order['users']['transporter']['first_name']} ${order['users']['transporter']['last_name']}'
-                                      : '',
+                                  order['general']
+                                              ['use_receiver_credentials'] ==
+                                          false
+                                      ? '${order['users']['sender']['first_name']} ${order['users']['sender']['last_name']}'
+                                      : '${order['general']['receiver_cred_name']} ${order['general']['receiver_cred_surname']}',
                                   style: TextStyle(
                                     color: Color(0xffA0A0A0),
                                     fontSize: 12,
@@ -399,7 +408,11 @@ class MapPanelTransporter extends StatelessWidget {
                                       width: 10,
                                     ),
                                     Text(
-                                      'XXX-XXX-XX-XX',
+                                      order['general'][
+                                                  'use_receiver_credentials'] ==
+                                              false
+                                          ? '${order['users']['sender']['phones'][0]['number']}'
+                                          : '${order['general']['receiver_cred_phone']}',
                                       style: TextStyle(
                                         color: Color(0xffA0A0A0),
                                         fontSize: 12,

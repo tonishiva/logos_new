@@ -57,6 +57,9 @@ class DetailOrderProvider with ChangeNotifier {
       print(response.statusCode);
       print(response.data);
       _order = response.data['data'];
+      _order.forEach((key, value) {
+        print('$key: $value');
+      });
       await getRoutePoints(context: context);
       if (_isLoading) {
         _isLoading = false;
@@ -139,6 +142,105 @@ class DetailOrderProvider with ChangeNotifier {
       Response response = await dio.post(
         url,
         data: {"user_vehicle_id": vehicleId},
+        options: Options(headers: headers),
+      );
+      print(response.statusCode);
+      print(response.data);
+    } on DioError catch (error) {
+      if (error.response != null) {
+        print(error.response.statusCode);
+        print(error.response.statusMessage);
+        print(error.response.data);
+        throw error;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(error.request);
+        print(error.message);
+        throw error;
+      }
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  Future<void> cancelOrder({@required BuildContext context}) async {
+    Map<String, dynamic> headers = await globals.getUserCredentials(context);
+    if (!headers.containsKey('Authorization')) {
+      return false;
+    }
+
+    var url = globals.baseUrl + "orders/${_order['id']}/cancel";
+    Dio dio = Dio();
+    try {
+      Response response = await dio.post(
+        url,
+        options: Options(headers: headers),
+      );
+      print(response.statusCode);
+      print(response.data);
+    } on DioError catch (error) {
+      if (error.response != null) {
+        print(error.response.statusCode);
+        print(error.response.statusMessage);
+        print(error.response.data);
+        throw error;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(error.request);
+        print(error.message);
+        throw error;
+      }
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  Future<void> dropDriver({@required BuildContext context}) async {
+    Map<String, dynamic> headers = await globals.getUserCredentials(context);
+    if (!headers.containsKey('Authorization')) {
+      return false;
+    }
+
+    var url = globals.baseUrl + "orders/${_order['id']}/drop";
+    Dio dio = Dio();
+    try {
+      Response response = await dio.post(
+        url,
+        options: Options(headers: headers),
+      );
+      print(response.statusCode);
+      print(response.data);
+    } on DioError catch (error) {
+      if (error.response != null) {
+        print(error.response.statusCode);
+        print(error.response.statusMessage);
+        print(error.response.data);
+        throw error;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(error.request);
+        print(error.message);
+        throw error;
+      }
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  Future<void> finishOrder({@required BuildContext context}) async {
+    Map<String, dynamic> headers = await globals.getUserCredentials(context);
+    if (!headers.containsKey('Authorization')) {
+      return false;
+    }
+
+    var url = globals.baseUrl + "orders/${_order['id']}/finish";
+    Dio dio = Dio();
+    try {
+      Response response = await dio.post(
+        url,
         options: Options(headers: headers),
       );
       print(response.statusCode);

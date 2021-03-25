@@ -119,6 +119,9 @@ abstract class  LocaleKeys {
   static const create_order = 'create_order';
   static const detailed_order_title = 'detailed_order.title';
   static const detailed_order_take_order = 'detailed_order.take_order';
+  static const detailed_order_cancel_order = 'detailed_order.cancel_order';
+  static const detailed_order_drop_driver = 'detailed_order.drop_driver';
+  static const detailed_order_complete_order = 'detailed_order.complete_order';
   static const detailed_order_load = 'detailed_order.load';
   static const detailed_order_unload = 'detailed_order.unload';
   static const detailed_order_package_type = 'detailed_order.package_type';
